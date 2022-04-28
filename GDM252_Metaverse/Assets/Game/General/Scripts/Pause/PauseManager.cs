@@ -7,29 +7,24 @@ public class PauseManager : MonoBehaviour
     public GameObject MenuPanel;
 
     public bool IsIngame = false;
-    public bool MenuIsOpen = false;
+    public bool IsMenuOpen = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if(IsIngame)
+        if(!IsIngame)
         {
-            if(Input.GetKeyDown(KeyCode.Escape))
+            return;
+        }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(IsMenuOpen)
             {
-                if(MenuIsOpen)
-                {
-                    CloseMenuPanel();
-                }
-                else
-                {
-                    OpenMenuPanel();
-                }
+                CloseMenuPanel();
+            }
+            else
+            {
+                OpenMenuPanel();
             }
         }
     }
@@ -38,13 +33,13 @@ public class PauseManager : MonoBehaviour
     {
         MenuPanel.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
-        MenuIsOpen = false;
+        IsMenuOpen = false;
     }
 
     void OpenMenuPanel()
     {
         MenuPanel.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
-        MenuIsOpen = true;
+        IsMenuOpen = true;
     }
 }

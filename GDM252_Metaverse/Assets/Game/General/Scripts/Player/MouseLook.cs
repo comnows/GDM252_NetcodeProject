@@ -5,6 +5,8 @@ using Unity.Netcode;
 
 public class MouseLook : NetworkBehaviour
 {
+    private float mouseX;
+    private float mouseY;
     public float mouseSensitivity = 100f;
     
     public Transform playerBody;
@@ -13,37 +15,58 @@ public class MouseLook : NetworkBehaviour
 
     float xRotation = 0f;
 
-    // Start is called before the first frame update
     void Start()
     {
         if(!IsOwner)
         {
-            Destroy(GetComponentInChildren<Camera>().gameObject);
+            DestroyCamera();
         }
         else
         {
             pauseManager = FindObjectOfType<PauseManager>();
-            Cursor.lockState = CursorLockMode.Locked;
+            HideCursor();
         }
-        // Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
+    private void DestroyCamera()
+    {
+        Destroy(GetComponentInChildren<Camera>().gameObject);
+    }
+
+    private void HideCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     void Update()
     {
         if(IsClient && IsOwner)
         {
-            if(!pauseManager.MenuIsOpen)
+            if(!pauseManager.IsMenuOpen)
             {
-                float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-                float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
-    
-                xRotation -= mouseY;
-                xRotation = Mathf.Clamp(xRotation, -90f, 90f);
-    
-                transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-                playerBody.Rotate(Vector3.up * mouseX);
+                GetInput();
+                RotateCamera();
+                RotatePlayer();
             }
         }
+    }
+
+    private void GetInput()
+    {
+        mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+    }
+
+    private void RotateCamera()
+    {
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+    }
+
+    private void RotatePlayer()
+    {
+        playerBody.Rotate(Vector3.up * mouseX);
     }
 }
