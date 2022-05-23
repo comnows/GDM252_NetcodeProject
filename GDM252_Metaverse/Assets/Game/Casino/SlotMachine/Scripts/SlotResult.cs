@@ -79,7 +79,7 @@ public class SlotResult : MonoBehaviour
         switch(name)
         {
             case "banana":
-                multiplier = 0;
+                multiplier = 3;
                 break;
             case "cherry":
                 multiplier = 0;
@@ -107,7 +107,7 @@ public class SlotResult : MonoBehaviour
 
         if(fruitResults[0].name == "strawberry" || fruitResults[1].name == "strawberry" || fruitResults[2].name == "strawberry")
         {
-            multiplier = 3;
+            multiplier = 2;
         }
 
         return multiplier;
