@@ -36,10 +36,7 @@ public class SlotResult : MonoBehaviour
 
         if(prizeMultiplier == 0)
         {
-            if(fruitResults[0].name != fruitResults[1].name && fruitResults[0].name != fruitResults[2].name && fruitResults[1].name != fruitResults[2].name)
-            {
-                prizeMultiplier = GetNoDuplicatePrizeMultiplier();
-            }
+            prizeMultiplier = GetNoDuplicatePrizeMultiplier();
         }
 
         Debug.Log(prizeMultiplier);
