@@ -8,13 +8,14 @@ public class BetSystem : MonoBehaviour
     public InputField BetInputfield;
     public Button allInButton;
     public Button halfBetButton;
+    public Button leaveButton;
 
-    private CasinoWallet casinoWallet;
+    private PlayerCredits credit;
     private SlotResult slotResult; 
     
     void Start()
     {
-        casinoWallet = GameObject.FindObjectOfType<CasinoWallet>();
+        credit = GameObject.FindObjectOfType<PlayerCredits>();
         slotResult = GameObject.FindObjectOfType<SlotResult>();
 
         slotResult.onPrizeMultiplierChange += BetResult;
@@ -24,12 +25,12 @@ public class BetSystem : MonoBehaviour
 
     public void AllInBet()
     {
-        BetInputfield.text = $"{casinoWallet.balance}";
+        BetInputfield.text = $"{credit.playerCredit}";
     }
 
     public void HalfBet()
     {
-        BetInputfield.text = $"{casinoWallet.balance / 2}";
+        BetInputfield.text = $"{credit.playerCredit / 2}";
     }
 
     public void SetZeroWhenBlank()
@@ -50,9 +51,9 @@ public class BetSystem : MonoBehaviour
 
     public void SetMaxBetWhenOverBalance()
     {
-        if(int.Parse(BetInputfield.text) > casinoWallet.balance)
+        if(int.Parse(BetInputfield.text) > credit.playerCredit)
         {
-            BetInputfield.text = $"{casinoWallet.balance}";
+            BetInputfield.text = $"{credit.playerCredit}";
         }
     }
 
@@ -60,7 +61,7 @@ public class BetSystem : MonoBehaviour
     {
         int prize = int.Parse(BetInputfield.text) * multiplier;
 
-        casinoWallet.AddBalance(prize);
+        credit.AddBalance(prize);
     }
 
     public int GetBetValue()
@@ -74,6 +75,7 @@ public class BetSystem : MonoBehaviour
         BetInputfield.interactable = false;
         allInButton.interactable = false;
         halfBetButton.interactable = false;
+        leaveButton.interactable = false;
     }
 
     public void EnableInput()
@@ -81,5 +83,6 @@ public class BetSystem : MonoBehaviour
         BetInputfield.interactable = true;
         allInButton.interactable = true;
         halfBetButton.interactable = true;
+        leaveButton.interactable = true;
     }
 }

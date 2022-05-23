@@ -327,6 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bingoGameUIPrefabs: {fileID: 8393110747004163298, guid: 3d241323939924f449dbddef75b073ab, type: 3}
+  slotMachineGameUIPrefabs: {fileID: 9165743673603474946, guid: 9d166dd07280a4744aa79b595fd940e4, type: 3}
 --- !u!1 &9015894120104451487
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,8 +6,11 @@ using UnityEngine.UI;
 public class PlayerInteract : NetworkBehaviour
 {
     public GameObject bingoGameUIPrefabs;
+    public GameObject slotMachineGameUIPrefabs;
     GameObject bingoGameUI;
+    GameObject slotMachineGameUI;
     private bool isBingoGame;
+    private bool isSlotMachineGame;
     private bool isIngame;
     int m_IndexNumber;
     void Update()
@@ -21,6 +24,7 @@ public class PlayerInteract : NetworkBehaviour
     private void Start() 
     {
         isBingoGame = false;
+        isSlotMachineGame = false;
         isIngame = false;
         m_IndexNumber = 0;
     }
@@ -32,9 +36,13 @@ public class PlayerInteract : NetworkBehaviour
             if (Input.GetKeyDown(KeyCode.E) && isBingoGame)
             {
                 InteractGame("EnterBingoGame");
-                isIngame = true;
-                FindObjectOfType<PauseManager>().DisablePlayerMovement();
-                Cursor.lockState = CursorLockMode.None;
+                DisablePlayerMovement();
+            }
+
+            else if (Input.GetKeyDown(KeyCode.E) && isSlotMachineGame)
+            {
+                InteractGame("EnterSlotMachineGame");
+                DisablePlayerMovement();
             }
         }
     }
@@ -47,8 +55,14 @@ public class PlayerInteract : NetworkBehaviour
             bingoGameUI = Instantiate(bingoGameUIPrefabs, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
             bingoGameUI.transform.SetParent (GameObject.FindGameObjectWithTag("Canvas").transform, false);
             bingoGameUI.transform.SetSiblingIndex(m_IndexNumber);
-            ChangePrefabsLayerInHierarchy();
-            Debug.Log("EnterBingoGame");
+            ChangePrefabsLayerInHierarchy(bingoGameUI);
+            break;
+
+            case "EnterSlotMachineGame":
+            slotMachineGameUI = Instantiate(slotMachineGameUIPrefabs, new Vector3(0, 0, 0), Quaternion.identity) as GameObject;
+            slotMachineGameUI.transform.SetParent (GameObject.FindGameObjectWithTag("Canvas").transform, false);
+            slotMachineGameUI.transform.SetSiblingIndex(m_IndexNumber);
+            ChangePrefabsLayerInHierarchy(slotMachineGameUI);
             break;
         }
     }
@@ -59,6 +73,23 @@ public class PlayerInteract : NetworkBehaviour
             isBingoGame = true;
             Debug.Log("EnterBingoZone");
         }
+        else if (other.gameObject.tag == "SlotMachineGame")
+        {
+            isSlotMachineGame = true;
+            Debug.Log("EnterSlotMachineZone");
+        }
+    }
+
+    private void OnTriggerExit(Collider other) 
+    {
+         if (other.gameObject.tag == "BingoGame")
+        {
+            isBingoGame = false;
+        }
+        else if (other.gameObject.tag == "SlotMachineGame")
+        {
+            isSlotMachineGame = false;
+        }
     }
 
     public void ExitMiniGame(string minigame)
@@ -67,18 +98,33 @@ public class PlayerInteract : NetworkBehaviour
         {
             case "BingoGame":
             Destroy(bingoGameUI);
-            isIngame = false;
-            Cursor.lockState = CursorLockMode.Locked;
-            FindObjectOfType<PauseManager>().EnablePlayerMovement();
             break;
-        }
+            case "SlotMachineGame":
+            Destroy(slotMachineGameUI);
+            break;
+        }    
+        EnblePlayerMovement();
     }
 
-    private void ChangePrefabsLayerInHierarchy()
+    private void ChangePrefabsLayerInHierarchy(GameObject gameUI)
     {
-       if (m_IndexNumber <= bingoGameUI.transform.GetSiblingIndex())
+       if (m_IndexNumber <= gameUI.transform.GetSiblingIndex())
             {
                 m_IndexNumber = 0;
             }
+    }
+
+    private void DisablePlayerMovement()
+    {
+        isIngame = true;
+        FindObjectOfType<PauseManager>().DisablePlayerMovement();
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+     private void EnblePlayerMovement()
+    {
+        isIngame = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        FindObjectOfType<PauseManager>().EnablePlayerMovement();
     }
 }

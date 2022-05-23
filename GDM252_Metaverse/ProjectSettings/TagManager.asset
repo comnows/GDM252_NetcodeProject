@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BingoGame
   - Canvas
+  - SlotMachineGame
   layers:
   - Default
   - TransparentFX

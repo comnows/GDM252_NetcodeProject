@@ -36,13 +36,11 @@ public class LoginManager : MonoBehaviour
         {
             loginPanel.SetActive(false);
             MenuPanel.SetActive(false);
-            //scorePanel.SetActive(true);
         }
         else
         {
             loginPanel.SetActive(true);
             MenuPanel.SetActive(false);
-            //scorePanel.SetActive(false);
         }
     }
 
@@ -64,7 +62,7 @@ public class LoginManager : MonoBehaviour
 
     private void HandleServerStarted()
     {
-        //throw new NotImplementedException();
+
     }
 
     private void HandleClientConnected(ulong clientId)
@@ -91,8 +89,7 @@ public class LoginManager : MonoBehaviour
         }
         pauseManager.IsIngame = false;
         SetUiVisibility(false);
-        // loginPanel.SetActive(true);
-        //leaveButton.SetActive(false);
+
     }
 
     public void Host() 

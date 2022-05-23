@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlotRoll : MonoBehaviour
 {
-    private CasinoWallet casinoWallet;
+    private PlayerCredits credit;
     private BetSystem betSystem;
     private SlotRandomSprite slotRandomSprite;
     private SlotResult slotResult;
@@ -33,7 +33,7 @@ public class SlotRoll : MonoBehaviour
 
     private void SetScriptComponents()
     {
-        casinoWallet = GameObject.FindObjectOfType<CasinoWallet>();
+        credit = GameObject.FindObjectOfType<PlayerCredits>();
         betSystem = GameObject.FindObjectOfType<BetSystem>();
         slotRandomSprite = GetComponent<SlotRandomSprite>();
         slotResult = GetComponent<SlotResult>();
@@ -136,13 +136,13 @@ public class SlotRoll : MonoBehaviour
 
     public void StartRoll()
     {
-        if(int.Parse(betSystem.BetInputfield.text) <= casinoWallet.balance && int.Parse(betSystem.BetInputfield.text) != 0)
+        if(int.Parse(betSystem.BetInputfield.text) <= credit.playerCredit && int.Parse(betSystem.BetInputfield.text) != 0)
         {
             if(!isRoll)
             {
                 isRoll = true;
                 betSystem.DisableInput();
-                casinoWallet.RemoveBalance(betSystem.GetBetValue());
+                credit.RemoveBalance(betSystem.GetBetValue());
                 uIMultiplierResult.ClearText();
                 RandomRollTimes();
                 RollSlots();

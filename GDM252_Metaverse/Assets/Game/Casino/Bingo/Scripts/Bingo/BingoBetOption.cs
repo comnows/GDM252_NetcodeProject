@@ -9,8 +9,11 @@ public class BingoBetOption : MonoBehaviour
     public GameObject inBingoGameUI;
     public GameObject backButton;
     public GameObject winLabel;
+    private PlayerCredits credit;
+
     void Start()
     {
+        credit = GameObject.FindObjectOfType<PlayerCredits>();
         randomTimeLeft = 0;
     }
 
@@ -47,7 +50,7 @@ public class BingoBetOption : MonoBehaviour
 
     private void StartBingoGame(int randTimeLeft)
     {
-        FindObjectOfType<PlayerCredits>().UpdatePlayerCredits("given",100);
+        credit.RemoveBalance(100);
         UnableStartGameUI();
         FindObjectOfType<TableNumber>().RandomNumberForTable();
         FindObjectOfType<TableNumber>().GetNumberForTable();
@@ -85,23 +88,23 @@ public class BingoBetOption : MonoBehaviour
         switch (randomTimeLeft)
         {
             case 20:
-            FindObjectOfType<PlayerCredits>().UpdatePlayerCredits("receive",10000);
+            credit.AddBalance(20000);
             break;
 
             case 30:
-            FindObjectOfType<PlayerCredits>().UpdatePlayerCredits("receive",5000);
+            credit.AddBalance(10000);
             break;
 
             case 40:
-            FindObjectOfType<PlayerCredits>().UpdatePlayerCredits("receive",2000);
+            credit.AddBalance(5000);
             break;
 
             case 50:
-            FindObjectOfType<PlayerCredits>().UpdatePlayerCredits("receive",700);
+            credit.AddBalance(1000);
             break;
 
             case 70:
-            FindObjectOfType<PlayerCredits>().UpdatePlayerCredits("receive",300);
+            credit.AddBalance(300);
             break;
         }
     }
@@ -110,5 +113,4 @@ public class BingoBetOption : MonoBehaviour
     {
         FindObjectOfType<TableNumber>().ClearTable();
     }
-
 }
