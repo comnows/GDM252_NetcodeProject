@@ -113,6 +113,7 @@ public class LoginManager : MonoBehaviour
         if (connectionPayload == null)
         {
             playerNameLists.Add(playerNameInputField.text);
+            FindObjectOfType<PlayerCredits>().GetCreditsFirstPlay(playerNameInputField.text);
         }
         else
         {
@@ -120,6 +121,7 @@ public class LoginManager : MonoBehaviour
             if (approveConnection)
             {
                 playerNameLists.Add(connectionPayload.playerName);
+                FindObjectOfType<PlayerCredits>().GetCreditsFirstPlay(playerNameInputField.text);
             }
         }
         
@@ -128,7 +130,7 @@ public class LoginManager : MonoBehaviour
         Quaternion spawnRot = Quaternion.identity;
         Vector3 spawnPos = Vector3.zero;
         int randomRotationNum = Random.Range(0,360);
-
+        
         spawnPos = SpawnPointsList[UnityEngine.Random.Range(0, SpawnPointsList.Length)].position;
         spawnRot = Quaternion.Euler(0f,randomRotationNum,0f);
 

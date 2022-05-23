@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 9015894119994377634}
   - component: {fileID: 9015894119994377633}
   - component: {fileID: 9061460564102618567}
+  - component: {fileID: -7657392028314766356}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -245,7 +246,7 @@ CharacterController:
   m_Height: 3.75
   m_Radius: 0.6
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.75
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
@@ -262,8 +263,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 9015894119994377628}
-  speed: 12
-  gravity: -9.81
+  moveSpeed: 12
+  gravityForce: -9.81
   jumpHeight: 3
   groundCheck: {fileID: 9015894121736274834}
   groundDistance: 0.4
@@ -313,6 +314,19 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   CanCommitToTransform: 0
+--- !u!114 &-7657392028314766356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9015894119994377629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0548ee22530ec8145b21c8d4ae90bf19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bingoGameUIPrefabs: {fileID: 8393110747004163298, guid: 3d241323939924f449dbddef75b073ab, type: 3}
 --- !u!1 &9015894120104451487
 GameObject:
   m_ObjectHideFlags: 0

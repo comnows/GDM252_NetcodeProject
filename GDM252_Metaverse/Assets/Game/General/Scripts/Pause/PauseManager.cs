@@ -5,7 +5,7 @@ using UnityEngine;
 public class PauseManager : MonoBehaviour
 {
     public GameObject MenuPanel;
-
+    private GameObject player; 
     public bool IsIngame = false;
     public bool IsMenuOpen = false;
 
@@ -33,6 +33,7 @@ public class PauseManager : MonoBehaviour
     {
         MenuPanel.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
+        EnablePlayerMovement();
         IsMenuOpen = false;
     }
 
@@ -40,6 +41,25 @@ public class PauseManager : MonoBehaviour
     {
         MenuPanel.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
+        DisablePlayerMovement();
         IsMenuOpen = true;
+    }
+
+    public void DisablePlayerMovement()
+    {
+        player = GameObject.Find("Player(Clone)");
+        if (player.GetComponent<PlayerMovement>().IsOwner)
+        {
+            player.GetComponent<PlayerMovement>().enabled = false;
+        }
+    }
+
+    public void EnablePlayerMovement()
+    {
+        player = GameObject.Find("Player(Clone)");
+        if (player.GetComponent<PlayerMovement>().IsOwner)
+        {
+            player.GetComponent<PlayerMovement>().enabled = true;
+        }
     }
 }
