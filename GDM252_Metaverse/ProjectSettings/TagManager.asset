@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BingoGame
   - Canvas
+  - Puck
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - MiddleBound
+  - Puck
   - 
   - 
   - 
