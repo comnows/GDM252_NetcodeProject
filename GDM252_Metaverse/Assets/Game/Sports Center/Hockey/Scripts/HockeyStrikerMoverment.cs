@@ -7,6 +7,7 @@ public class HockeyStrikerMoverment : MonoBehaviour
     private Rigidbody playerRigidbody;
     private Vector3 mOffset;
     private Vector3 movePosition;
+    public float speed = 20f;
     private float mZCoord;
 
     private void Start() 
@@ -32,6 +33,11 @@ public class HockeyStrikerMoverment : MonoBehaviour
     private void OnMouseDrag() 
     {
         movePosition = GetMouseWorldPos() + mOffset;
-        playerRigidbody.MovePosition(movePosition);
+        // velocity = movePosition - transform.position;
+        movePosition = Vector3.Normalize(movePosition - transform.position) * speed;
+
+        // playerRigidbody.velocity = velocity;
+        playerRigidbody.AddForce(movePosition);
+        // playerRigidbody.MovePosition(movePosition);
     }
 }
