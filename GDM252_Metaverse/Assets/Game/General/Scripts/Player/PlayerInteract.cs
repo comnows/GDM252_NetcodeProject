@@ -7,10 +7,13 @@ public class PlayerInteract : NetworkBehaviour
 {
     public GameObject bingoGameUIPrefabs;
     public GameObject slotMachineGameUIPrefabs;
+    public GameObject airHockeyCameraPrefabs;
+    GameObject airHockeyCamera;
     GameObject bingoGameUI;
     GameObject slotMachineGameUI;
     private bool isBingoGame;
     private bool isSlotMachineGame;
+    private bool isAirHockeyGame;
     private bool isIngame;
     int m_IndexNumber;
     void Update()
@@ -44,6 +47,12 @@ public class PlayerInteract : NetworkBehaviour
                 InteractGame("EnterSlotMachineGame");
                 DisablePlayerMovement();
             }
+
+            else if (Input.GetKeyDown(KeyCode.E) && isAirHockeyGame)
+            {
+                InteractGame("EnterAirHockeyGame");
+                DisablePlayerMovement();
+            }
         }
     }
 
@@ -64,31 +73,48 @@ public class PlayerInteract : NetworkBehaviour
             slotMachineGameUI.transform.SetSiblingIndex(m_IndexNumber);
             ChangePrefabsLayerInHierarchy(slotMachineGameUI);
             break;
+
+            case "EnterAirHockeyGame":
+            airHockeyCamera = Instantiate(airHockeyCameraPrefabs, new Vector3(82.43f,8,0.2f), airHockeyCameraPrefabs.transform.rotation) as GameObject;
+            break;
         }
     }
 
     private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "BingoGame")
+        switch (other.gameObject.tag)
         {
+            case "BingoGame":
             isBingoGame = true;
             Debug.Log("EnterBingoZone");
-        }
-        else if (other.gameObject.tag == "SlotMachineGame")
-        {
+            break;
+
+            case "SlotMachineGame":
             isSlotMachineGame = true;
             Debug.Log("EnterSlotMachineZone");
+            break;
+
+            case "AirHockeyGame":
+            isAirHockeyGame = true;
+            Debug.Log("EnterAirHockeyZone");
+            break;
         }
     }
 
     private void OnTriggerExit(Collider other) 
     {
-         if (other.gameObject.tag == "BingoGame")
+        switch (other.gameObject.tag)
         {
+            case "BingoGame":
             isBingoGame = false;
-        }
-        else if (other.gameObject.tag == "SlotMachineGame")
-        {
+            break;
+
+            case "SlotMachineGame":
             isSlotMachineGame = false;
+            break;
+
+            case "AirHockeyGame":
+            isAirHockeyGame = false;
+            break;
         }
     }
 
@@ -99,8 +125,13 @@ public class PlayerInteract : NetworkBehaviour
             case "BingoGame":
             Destroy(bingoGameUI);
             break;
+
             case "SlotMachineGame":
             Destroy(slotMachineGameUI);
+            break;
+
+            case "AirHockeyGame":
+            Destroy(airHockeyCamera);
             break;
         }    
         EnblePlayerMovement();
