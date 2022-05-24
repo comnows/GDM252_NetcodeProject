@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class BingoBetOption : MonoBehaviour
 {
     public int randomTimeLeft;
@@ -10,10 +9,13 @@ public class BingoBetOption : MonoBehaviour
     public GameObject backButton;
     public GameObject winLabel;
     private PlayerCredits credit;
+    private PlayerInteract [] playerInteracts;
+    private PlayerInteract playerInteract;
 
     void Start()
     {
         credit = GameObject.FindObjectOfType<PlayerCredits>();
+        FindMovementScript();
         randomTimeLeft = 0;
     }
 
@@ -50,12 +52,15 @@ public class BingoBetOption : MonoBehaviour
 
     private void StartBingoGame(int randTimeLeft)
     {
-        credit.RemoveBalance(100);
-        UnableStartGameUI();
-        FindObjectOfType<TableNumber>().RandomNumberForTable();
-        FindObjectOfType<TableNumber>().GetNumberForTable();
-        FindObjectOfType<BingoCondition>().GetRandomTimes(randTimeLeft);
-        FindObjectOfType<RandomBingo>().EnableRandomNumber();
+        if (credit.playerCredit > 100)
+        {
+            credit.RemoveBalance(100);
+            UnableStartGameUI();
+            FindObjectOfType<TableNumber>().RandomNumberForTable();
+            FindObjectOfType<TableNumber>().GetNumberForTable();
+            FindObjectOfType<BingoCondition>().GetRandomTimes(randTimeLeft);
+            FindObjectOfType<RandomBingo>().EnableRandomNumber();
+        }
     }
 
     private void UnableStartGameUI()
@@ -79,8 +84,24 @@ public class BingoBetOption : MonoBehaviour
     }
 
     public void LeaveBingoGameButton()
-    {
-        FindObjectOfType<PlayerInteract>().ExitMiniGame("BingoGame");
+    {   
+        playerInteract.ExitMiniGame("BingoGame");
+        // FindObjectsOfType<PlayerInteract>().ExitMiniGame("BingoGame");     
+        // bool player = GetComponent<PlayerInteract>().isIngame;
+        // Cursor.lockState = CursorLockMode.Locked;
+        // FindObjectOfType<PauseManager>().EnablePlayerMovement();        
+        // Destroy(this.gameObject);
+    }
+    
+    public void FindMovementScript() {
+        playerInteracts = GameObject.FindObjectsOfType<PlayerInteract>();
+        foreach (PlayerInteract n in playerInteracts)
+        {
+            if (n.IsOwner)
+            {
+                playerInteract = n;
+            }
+        } 
     }
 
     public void GetPrize()

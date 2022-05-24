@@ -126,8 +126,6 @@ public class PlayerInteract : NetworkBehaviour
 
     public void ExitMiniGame(string minigame)
     {
-        if(IsClient && IsOwner)
-        {
             switch (minigame)
             {
                 case "BingoGame":
@@ -145,7 +143,6 @@ public class PlayerInteract : NetworkBehaviour
                 break;
             }    
             EnblePlayerMovement();
-        }
     }
 
     private void ChangePrefabsLayerInHierarchy(GameObject gameUI)

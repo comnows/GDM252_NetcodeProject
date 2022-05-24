@@ -5,10 +5,10 @@ using UnityEngine;
 public class PauseManager : MonoBehaviour
 {
     public GameObject MenuPanel;
-    private GameObject player; 
+    private PlayerMovement [] players;
+    private PlayerMovement player; 
     public bool IsIngame = false;
     public bool IsMenuOpen = false;
-
     void Update()
     {
         if(!IsIngame)
@@ -29,6 +29,17 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+    public void FindMovementScript() {
+        players = GameObject.FindObjectsOfType<PlayerMovement>();
+        foreach (PlayerMovement n in players)
+        {
+            if (n.IsOwner)
+            {
+                player = n;
+            }
+        } 
+    }
+
     void CloseMenuPanel()
     {
         MenuPanel.SetActive(false);
@@ -47,19 +58,11 @@ public class PauseManager : MonoBehaviour
 
     public void DisablePlayerMovement()
     {
-        player = GameObject.Find("Player(Clone)");
-        if (player.GetComponent<PlayerMovement>().IsOwner)
-        {
-            player.GetComponent<PlayerMovement>().enabled = false;
-        }
+        player.enabled = false;
     }
 
     public void EnablePlayerMovement()
     {
-        player = GameObject.Find("Player(Clone)");
-        if (player.GetComponent<PlayerMovement>().IsOwner)
-        {
-            player.GetComponent<PlayerMovement>().enabled = true;
-        }
+        player.enabled = true;
     }
 }

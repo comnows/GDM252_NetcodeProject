@@ -111,6 +111,7 @@ public class LoginManager : MonoBehaviour
         {
             playerNameLists.Add(playerNameInputField.text);
             FindObjectOfType<PlayerCredits>().GetCreditsFirstPlay(playerNameInputField.text);
+            pauseManager.FindMovementScript();
         }
         else
         {
@@ -119,6 +120,7 @@ public class LoginManager : MonoBehaviour
             {
                 playerNameLists.Add(connectionPayload.playerName);
                 FindObjectOfType<PlayerCredits>().GetCreditsFirstPlay(playerNameInputField.text);
+                pauseManager.FindMovementScript();
             }
         }
         
