@@ -16,9 +16,11 @@ public class HockeyStrikerMoverment : MonoBehaviour
     }
     private void OnMouseDown()
     {
+        Debug.Log("OnMouseDown");
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-
+        Debug.Log("mZCoord" + mZCoord);
         mOffset = gameObject.transform.position - GetMouseWorldPos();
+        Debug.Log("mOffset" + mOffset);
     }
 
     private Vector3 GetMouseWorldPos()

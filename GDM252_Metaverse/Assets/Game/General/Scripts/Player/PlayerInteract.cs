@@ -8,6 +8,7 @@ public class PlayerInteract : NetworkBehaviour
     public GameObject bingoGameUIPrefabs;
     public GameObject slotMachineGameUIPrefabs;
     public GameObject airHockeyCameraPrefabs;
+    public GameObject playerCamera;
     GameObject airHockeyCamera;
     GameObject bingoGameUI;
     GameObject slotMachineGameUI;
@@ -75,6 +76,7 @@ public class PlayerInteract : NetworkBehaviour
             break;
 
             case "EnterAirHockeyGame":
+            playerCamera.SetActive(false);
             airHockeyCamera = Instantiate(airHockeyCameraPrefabs, new Vector3(82.43f,8,0.2f), airHockeyCameraPrefabs.transform.rotation) as GameObject;
             break;
         }
@@ -132,6 +134,7 @@ public class PlayerInteract : NetworkBehaviour
 
             case "AirHockeyGame":
             Destroy(airHockeyCamera);
+            playerCamera.SetActive(true);
             break;
         }    
         EnblePlayerMovement();
