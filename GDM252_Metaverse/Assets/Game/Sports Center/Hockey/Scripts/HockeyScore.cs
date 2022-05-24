@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class HockeyScore : MonoBehaviour
 {
     public HockeyPuck hockeyPuck;
-
     public Text scoreText;
-
+    public GameObject winText;
+    public GameObject leaveGameButton;
     private int player1Score = 0;
     private int player2Score = 0;
 
@@ -16,7 +16,7 @@ public class HockeyScore : MonoBehaviour
     void Start()
     {
         hockeyPuck.onGoal += OnGoalScore;
-        ShowScore();
+        //ShowScore();
     }
 
     private void OnGoalScore(int id)
@@ -48,11 +48,26 @@ public class HockeyScore : MonoBehaviour
     {
         if(player1Score == 7)
         {
-
+            winText.gameObject.GetComponent<Text>().text = "Player1 Win!";
+            winText.SetActive(true);
+            leaveGameButton.SetActive(true);
         }
         else if(player2Score == 7)
         {
-
+            winText.gameObject.GetComponent<Text>().text = "Player2 Win!";
+            winText.SetActive(true);
+            leaveGameButton.SetActive(true);
         }
+    }
+    
+    public void LeaveHockeyGame()
+    {
+        winText.SetActive(false);
+        player1Score = 0;
+        player2Score = 0;
+        hockeyPuck.ResetOriginPosition();
+        ShowScore();
+        FindObjectOfType<PlayerInteract>().ExitMiniGame("AirHockeyGame");
+        leaveGameButton.SetActive(false);
     }
 }

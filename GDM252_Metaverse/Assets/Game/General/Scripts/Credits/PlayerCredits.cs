@@ -17,7 +17,7 @@ public class PlayerCredits : MonoBehaviour
         playerName = "";
         playerCreditsLabel = GameObject.Find ("Canvas/playerCreditText").GetComponent<Text>();
         OnBalanceChange += UpdateBalanceText;
-        OnBalanceChange?.Invoke(playerCredit);
+        //OnBalanceChange?.Invoke(playerCredit);
     }
 
     public void GetCreditsFirstPlay(string playerNames)

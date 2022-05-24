@@ -11,6 +11,12 @@ public class HockeyPuck : MonoBehaviour
     
     public Transform spawnPositionLeft;
     public Transform spawnPositionRight;
+    private Vector3 originPosition;
+
+    private void Start() 
+    {
+        originPosition = this.transform.position;
+    }
 
     public void ResetPosition(int id)
     {
@@ -29,5 +35,10 @@ public class HockeyPuck : MonoBehaviour
     public void GoalTriggerEnter(int id)
     {
         onGoal?.Invoke(id);
+    }
+
+    public void ResetOriginPosition()
+    {
+        transform.position = originPosition;
     }
 }

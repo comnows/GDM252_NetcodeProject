@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class HockeyStrikerMoverment : MonoBehaviour
+using Unity.Netcode;
+public class HockeyStrikerMoverment : NetworkBehaviour
 {
     private Rigidbody playerRigidbody;
     private Vector3 mOffset;
@@ -16,11 +16,11 @@ public class HockeyStrikerMoverment : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Debug.Log("OnMouseDown");
+        if(IsClient && IsOwner)
+        {
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
-        Debug.Log("mZCoord" + mZCoord);
         mOffset = gameObject.transform.position - GetMouseWorldPos();
-        Debug.Log("mOffset" + mOffset);
+        }
     }
 
     private Vector3 GetMouseWorldPos()
@@ -33,6 +33,8 @@ public class HockeyStrikerMoverment : MonoBehaviour
 
     private void OnMouseDrag() 
     {
+        if(IsClient && IsOwner)
+        {
         movePosition = GetMouseWorldPos() + mOffset;
         // velocity = movePosition - transform.position;
         movePosition = Vector3.Normalize(movePosition - transform.position) * speed;
@@ -40,5 +42,6 @@ public class HockeyStrikerMoverment : MonoBehaviour
         // playerRigidbody.velocity = velocity;
         playerRigidbody.AddForce(movePosition);
         // playerRigidbody.MovePosition(movePosition);
+        }
     }
 }

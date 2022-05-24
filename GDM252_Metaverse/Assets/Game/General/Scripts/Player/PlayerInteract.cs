@@ -8,20 +8,21 @@ public class PlayerInteract : NetworkBehaviour
     public GameObject bingoGameUIPrefabs;
     public GameObject slotMachineGameUIPrefabs;
     public GameObject airHockeyCameraPrefabs;
+    public GameObject airHockeyScoreLabel;
     public GameObject playerCamera;
+    GameObject airHockeyZone;
     GameObject airHockeyCamera;
     GameObject bingoGameUI;
     GameObject slotMachineGameUI;
     private bool isBingoGame;
     private bool isSlotMachineGame;
-    private bool isAirHockeyGame;
-    private bool isIngame;
+    public bool isAirHockeyGame;
+    public bool isIngame;
     int m_IndexNumber;
     void Update()
     {
         if(IsClient && IsOwner)
         {
-            
             GetInput();
         }
     }
@@ -30,6 +31,8 @@ public class PlayerInteract : NetworkBehaviour
         isBingoGame = false;
         isSlotMachineGame = false;
         isIngame = false;
+        airHockeyZone = GameObject.FindGameObjectWithTag("AirHockeyGame");
+        airHockeyScoreLabel = GameObject.FindGameObjectWithTag("HockeyScoreText");
         m_IndexNumber = 0;
     }
 
@@ -78,6 +81,7 @@ public class PlayerInteract : NetworkBehaviour
             case "EnterAirHockeyGame":
             playerCamera.SetActive(false);
             airHockeyCamera = Instantiate(airHockeyCameraPrefabs, new Vector3(82.43f,8,0.2f), airHockeyCameraPrefabs.transform.rotation) as GameObject;
+            airHockeyZone.SetActive(false);
             break;
         }
     }
@@ -122,22 +126,26 @@ public class PlayerInteract : NetworkBehaviour
 
     public void ExitMiniGame(string minigame)
     {
-        switch (minigame)
+        if(IsClient && IsOwner)
         {
-            case "BingoGame":
-            Destroy(bingoGameUI);
-            break;
+            switch (minigame)
+            {
+                case "BingoGame":
+                Destroy(bingoGameUI);
+                break;
 
-            case "SlotMachineGame":
-            Destroy(slotMachineGameUI);
-            break;
+                case "SlotMachineGame":
+                Destroy(slotMachineGameUI);
+                break;
 
-            case "AirHockeyGame":
-            Destroy(airHockeyCamera);
-            playerCamera.SetActive(true);
-            break;
-        }    
-        EnblePlayerMovement();
+                case "AirHockeyGame":
+                Destroy(airHockeyCamera);
+                playerCamera.SetActive(true);
+                airHockeyZone.SetActive(true);
+                break;
+            }    
+            EnblePlayerMovement();
+        }
     }
 
     private void ChangePrefabsLayerInHierarchy(GameObject gameUI)
@@ -150,15 +158,21 @@ public class PlayerInteract : NetworkBehaviour
 
     private void DisablePlayerMovement()
     {
+        if(IsOwner)
+        {
         isIngame = true;
         FindObjectOfType<PauseManager>().DisablePlayerMovement();
         Cursor.lockState = CursorLockMode.None;
+        }
     }
 
      private void EnblePlayerMovement()
     {
+        if(IsOwner)
+        {
         isIngame = false;
         Cursor.lockState = CursorLockMode.Locked;
         FindObjectOfType<PauseManager>().EnablePlayerMovement();
+        }
     }
 }
