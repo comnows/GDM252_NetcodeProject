@@ -6,6 +6,7 @@ using Unity.Netcode;
 public class PlayerMovement : NetworkBehaviour
 {
     public CharacterController controller;
+    public Animator animator;
 
     private float horizonInput;
     private float verticalInput;
@@ -30,6 +31,7 @@ public class PlayerMovement : NetworkBehaviour
             GetInput();
             GetMoveDirection();
             Move();
+            SetMoveAnimation();
             Jump();
             SetGravity();
         }
@@ -51,6 +53,18 @@ public class PlayerMovement : NetworkBehaviour
     private void Move()
     {
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+    }
+
+    private void SetMoveAnimation()
+    {
+        if(verticalInput > 0.01 || verticalInput < -0.01)
+        {
+            animator.SetFloat("MoveSpeed", moveDirection.magnitude * verticalInput);
+        }
+        else
+        {
+            animator.SetFloat("MoveSpeed", moveDirection.magnitude);
+        }
     }
 
     private void Jump()
