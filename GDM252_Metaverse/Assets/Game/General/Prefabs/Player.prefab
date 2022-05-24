@@ -331,6 +331,7 @@ MonoBehaviour:
   bingoGameUIPrefabs: {fileID: 8393110747004163298, guid: 3d241323939924f449dbddef75b073ab, type: 3}
   slotMachineGameUIPrefabs: {fileID: 9165743673603474946, guid: 9d166dd07280a4744aa79b595fd940e4, type: 3}
   airHockeyCameraPrefabs: {fileID: 4898853964069261659, guid: 2d11a9d1cc6d3fd42b3222cad7546335, type: 3}
+  airHockeyPadPrefabs: {fileID: 8467175378890569875, guid: 83e730cd12b0a384f9912b52e429fe8d, type: 3}
   airHockeyScoreLabel: {fileID: 0}
   playerCamera: {fileID: 2050716333}
   isAirHockeyGame: 0

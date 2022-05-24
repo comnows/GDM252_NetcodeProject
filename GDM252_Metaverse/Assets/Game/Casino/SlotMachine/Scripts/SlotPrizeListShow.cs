@@ -5,7 +5,12 @@ using UnityEngine;
 public class SlotPrizeListShow : MonoBehaviour
 {
     public GameObject prizeListImg;
-
+    private PlayerInteract [] playerInteracts;
+    private PlayerInteract playerInteract;
+    private void Start() 
+    {
+        FindPlayerInteractScript();    
+    }
     public void ShowPrizeList()
     {
         if (prizeListImg.activeSelf == false)
@@ -18,8 +23,19 @@ public class SlotPrizeListShow : MonoBehaviour
         }
     }
 
+      public void FindPlayerInteractScript() {
+        playerInteracts = GameObject.FindObjectsOfType<PlayerInteract>();
+        foreach (PlayerInteract n in playerInteracts)
+        {
+            if (n.IsOwner)
+            {
+                playerInteract = n;
+            }
+        } 
+    }
+
     public void LeaveGame()
     {
-        FindObjectOfType<PlayerInteract>().ExitMiniGame("SlotMachineGame");
+        playerInteract.ExitMiniGame("SlotMachineGame");
     }
 }

@@ -10,6 +10,9 @@ TagManager:
   - SlotMachineGame
   - AirHockeyGame
   - HockeyScoreText
+  - PadSpawnPoint
+  - AirHockeyZone
+  - AirHockeyZone2
   layers:
   - Default
   - TransparentFX

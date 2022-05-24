@@ -11,11 +11,14 @@ public class HockeyScore : MonoBehaviour
     public GameObject leaveGameButton;
     private int player1Score = 0;
     private int player2Score = 0;
+    private PlayerInteract [] playerInteracts;
+    private PlayerInteract playerInteract;
 
     // Start is called before the first frame update
     void Start()
     {
         hockeyPuck.onGoal += OnGoalScore;
+        FindPlayerInteractScript();
         //ShowScore();
     }
 
@@ -67,7 +70,18 @@ public class HockeyScore : MonoBehaviour
         player2Score = 0;
         hockeyPuck.ResetOriginPosition();
         ShowScore();
-        FindObjectOfType<PlayerInteract>().ExitMiniGame("AirHockeyGame");
+        playerInteract.ExitMiniGame("AirHockeyGame");
         leaveGameButton.SetActive(false);
+    }
+
+     public void FindPlayerInteractScript() {
+        playerInteracts = GameObject.FindObjectsOfType<PlayerInteract>();
+        foreach (PlayerInteract n in playerInteracts)
+        {
+            if (n.IsOwner)
+            {
+                playerInteract = n;
+            }
+        } 
     }
 }

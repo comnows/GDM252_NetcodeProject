@@ -8,16 +8,24 @@ public class PlayerInteract : NetworkBehaviour
     public GameObject bingoGameUIPrefabs;
     public GameObject slotMachineGameUIPrefabs;
     public GameObject airHockeyCameraPrefabs;
+    public GameObject airHockeyPadPrefabs;
     public GameObject airHockeyScoreLabel;
     public GameObject playerCamera;
+    GameObject airHockeyPad;
+    GameObject airHockeyPad2;
     GameObject airHockeyZone;
+    GameObject airHockeyZone2;
     GameObject airHockeyCamera;
     GameObject bingoGameUI;
     GameObject slotMachineGameUI;
+    GameObject padSpawnPoint;
+    GameObject padSpawnPoint2;
     private bool isBingoGame;
     private bool isSlotMachineGame;
     public bool isAirHockeyGame;
     public bool isIngame;
+    string whatTag;
+
     int m_IndexNumber;
     void Update()
     {
@@ -31,7 +39,11 @@ public class PlayerInteract : NetworkBehaviour
         isBingoGame = false;
         isSlotMachineGame = false;
         isIngame = false;
-        airHockeyZone = GameObject.FindGameObjectWithTag("AirHockeyGame");
+        whatTag = "";
+        padSpawnPoint = GameObject.Find("PadSpawnPoint");
+        padSpawnPoint2 = GameObject.Find("PadSpawnPoint2");
+        airHockeyZone = GameObject.FindGameObjectWithTag("AirHockeyZone");
+        airHockeyZone2 = GameObject.FindGameObjectWithTag("AirHockeyZone2");
         airHockeyScoreLabel = GameObject.FindGameObjectWithTag("HockeyScoreText");
         m_IndexNumber = 0;
     }
@@ -54,6 +66,14 @@ public class PlayerInteract : NetworkBehaviour
 
             else if (Input.GetKeyDown(KeyCode.E) && isAirHockeyGame)
             {
+                if (whatTag == "AirHockeyZone")
+                {
+                    SpawnHockeyStrikerServerRpc(padSpawnPoint.transform.position);
+                }
+                else if (whatTag == "AirHockeyZone2")
+                {
+                    SpawnHockeyStrikerServerRpc(padSpawnPoint2.transform.position);
+                }
                 InteractGame("EnterAirHockeyGame");
                 DisablePlayerMovement();
             }
@@ -82,6 +102,7 @@ public class PlayerInteract : NetworkBehaviour
             playerCamera.SetActive(false);
             airHockeyCamera = Instantiate(airHockeyCameraPrefabs, new Vector3(82.43f,8,0.2f), airHockeyCameraPrefabs.transform.rotation) as GameObject;
             airHockeyZone.SetActive(false);
+            // FindObjectOfType<HockeyStrikerMoverment>().SetObjectID();
             break;
         }
     }
@@ -99,9 +120,16 @@ public class PlayerInteract : NetworkBehaviour
             Debug.Log("EnterSlotMachineZone");
             break;
 
-            case "AirHockeyGame":
+            case "AirHockeyZone":
             isAirHockeyGame = true;
+            whatTag = "AirHockeyZone";
             Debug.Log("EnterAirHockeyZone");
+            break;
+
+            case "AirHockeyZone2":
+            isAirHockeyGame = true;
+            whatTag = "AirHockeyZone2";
+            Debug.Log("EnterAirHockeyZone2");
             break;
         }
     }
@@ -163,7 +191,7 @@ public class PlayerInteract : NetworkBehaviour
         }
     }
 
-     private void EnblePlayerMovement()
+    private void EnblePlayerMovement()
     {
         if(IsOwner)
         {
@@ -171,5 +199,12 @@ public class PlayerInteract : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         FindObjectOfType<PauseManager>().EnablePlayerMovement();
         }
+    }
+
+    [ServerRpc(Delivery = RpcDelivery.Reliable)]
+    void SpawnHockeyStrikerServerRpc(Vector3 spawnPos)
+    {
+        NetworkObject airhockeyPad = Instantiate(airHockeyPadPrefabs, spawnPos, airHockeyPadPrefabs.transform.rotation).GetComponent<NetworkObject>();
+        airhockeyPad.SpawnWithOwnership(OwnerClientId);
     }
 }

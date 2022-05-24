@@ -9,18 +9,59 @@ public class HockeyStrikerMoverment : NetworkBehaviour
     private Vector3 movePosition;
     public float speed = 20f;
     private float mZCoord;
-
+    private bool isOwn;
+    private PlayerInteract [] players;
+    private PlayerInteract player;
     private void Start() 
     {
+        isOwn = false;
         playerRigidbody = GetComponent<Rigidbody>();
+        FindPlayerScript();
     }
     private void OnMouseDown()
     {
-        if(IsClient && IsOwner)
+        if(OwnerClientId == player.OwnerClientId)
         {
         mZCoord = Camera.main.WorldToScreenPoint(gameObject.transform.position).z;
         mOffset = gameObject.transform.position - GetMouseWorldPos();
+        Debug.Log("OnMouseDown");
         }
+    }
+
+    // public void SetObjectID()
+    // {
+    //     var drag = this.transform.GetComponent<NetworkObject>();
+    //         if (drag != null)
+    //         {
+    //             if (!drag.IsOwner)
+    //             {
+    //                 ChangeBombStateServerRpc(drag.OwnerClientId, drag.NetworkObjectId);
+    //             }
+    //         }
+    // }
+
+    // [ServerRpc]
+    // public void ChangeBombStateServerRpc(ulong clientId, ulong networkId)
+    // {
+    //     List<NetworkObject> networkObjects = NetworkManager.Singleton.ConnectedClients[clientId].OwnedObjects;
+    //     foreach (NetworkObject networkObject in networkObjects)
+    //     {   
+    //         if (networkObject.NetworkObjectId == networkId)
+    //         {
+    //             isOwn = true;
+    //         }
+    //     }    
+    // }
+    private void FindPlayerScript()
+    {
+        players = GameObject.FindObjectsOfType<PlayerInteract>();
+        foreach (PlayerInteract n in players)
+        {
+            if (n.IsOwner)
+            {
+                player = n;
+            }
+        } 
     }
 
     private Vector3 GetMouseWorldPos()
@@ -33,7 +74,7 @@ public class HockeyStrikerMoverment : NetworkBehaviour
 
     private void OnMouseDrag() 
     {
-        if(IsClient && IsOwner)
+        if(OwnerClientId == player.OwnerClientId)
         {
         movePosition = GetMouseWorldPos() + mOffset;
         // velocity = movePosition - transform.position;
@@ -43,5 +84,6 @@ public class HockeyStrikerMoverment : NetworkBehaviour
         playerRigidbody.AddForce(movePosition);
         // playerRigidbody.MovePosition(movePosition);
         }
+        Debug.Log("OnMouseDrag");
     }
 }

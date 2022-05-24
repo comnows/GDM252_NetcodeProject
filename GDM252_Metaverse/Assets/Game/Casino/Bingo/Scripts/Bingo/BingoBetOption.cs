@@ -15,7 +15,7 @@ public class BingoBetOption : MonoBehaviour
     void Start()
     {
         credit = GameObject.FindObjectOfType<PlayerCredits>();
-        FindMovementScript();
+        FindPlayerInteractScript();
         randomTimeLeft = 0;
     }
 
@@ -86,14 +86,9 @@ public class BingoBetOption : MonoBehaviour
     public void LeaveBingoGameButton()
     {   
         playerInteract.ExitMiniGame("BingoGame");
-        // FindObjectsOfType<PlayerInteract>().ExitMiniGame("BingoGame");     
-        // bool player = GetComponent<PlayerInteract>().isIngame;
-        // Cursor.lockState = CursorLockMode.Locked;
-        // FindObjectOfType<PauseManager>().EnablePlayerMovement();        
-        // Destroy(this.gameObject);
     }
     
-    public void FindMovementScript() {
+    public void FindPlayerInteractScript() {
         playerInteracts = GameObject.FindObjectsOfType<PlayerInteract>();
         foreach (PlayerInteract n in playerInteracts)
         {

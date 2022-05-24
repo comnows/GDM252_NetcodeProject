@@ -58,11 +58,19 @@ public class PauseManager : MonoBehaviour
 
     public void DisablePlayerMovement()
     {
+        if (player == null)
+        {
+        FindMovementScript();
+        }
         player.enabled = false;
     }
 
     public void EnablePlayerMovement()
     {
+        if (player == null)
+        {
+        FindMovementScript();
+        }
         player.enabled = true;
     }
 }
